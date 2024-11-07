@@ -1,6 +1,7 @@
 #include "vectorOperations.h"
 vectorOperations::vectorOperations(float x, float y, vectorsType notacion)
 {
+    dimension_ = 2;
     if (notacion == POLAR)
     {
         polarVector_ = {x, y};
@@ -15,6 +16,7 @@ vectorOperations::vectorOperations(float x, float y, vectorsType notacion)
 
 vectorOperations::vectorOperations(float x, float y, float z)
 {
+    dimension_ = 3;
     cartesianVector_ = {x, y, z};
 }
 
@@ -37,21 +39,45 @@ float vectorOperations::convertAngleRad(float angle)
 
 float vectorOperations::convertAngleDegree(float angle)
 {
+    throw invalid_argument("As to now, this library only supports 2D vectors");
     return static_cast<float>(angle * 360 / (2 * M_PI));
 }
 
-vector<float> vectorOperations::sumarVector(vector<float> sumarVector, vectorsType returnNotacion)
+vector<float> vectorOperations::sumarVector(vector<float> sumarVector, vectorsType returnNotation)
 {
     if (sumarVector.size() != cartesianVector_.size())
     {
         throw invalid_argument("Vector dimensions must be the same");
     }
-    else if (sumarVector.size() != 2)
+    else if (dimension_ != 2)
     {
         throw invalid_argument("As to now, this library only supports 2D vectors");
     }
     vector<float> cartesianReturnVector;
     for (int i = 0; i < sumarVector.size(); i++)
         cartesianReturnVector.push_back(sumarVector[i] + cartesianVector_[i]);
-    return (returnNotacion == CARTESIANO) ? cartesianReturnVector : fromCartesianToPolar(cartesianReturnVector);
+    return (returnNotation == CARTESIANO) ? cartesianReturnVector : fromCartesianToPolar(cartesianReturnVector);
+}
+
+vector<float> vectorOperations::girarNGrados(float n, vectorsType returnNotation)
+{
+    if (dimension_ != 2)
+    {
+        throw invalid_argument("As to now, this library only supports 2D vectors");
+    }
+}
+
+vector<float> vectorOperations::multiplyVector(vector<vector<float>> rotationMatrix)
+{
+    vector<float> returnVector;
+    for (vector<float> i : rotationMatrix)
+    {
+        float result = 0;
+        for (int j = 0; j < i.size(); j++)
+        {
+            result += (i[j] * cartesianVector_[j]);
+        }
+        returnVector.push_back(result);
+    }
+    return returnVector;
 }

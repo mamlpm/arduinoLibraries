@@ -24,9 +24,7 @@ public:
     };
     vectorOperations(float x, float y, vectorsType notacion);
     vectorOperations(float x, float y, float z);
-    //TODO
     vector<float> multiplyVector(vector<vector<float>> rotationMatrix);
-    // TODO
     vector<float> girarNGrados(float n, vectorsType returnNotation);
     vector<float> sumarVector(vector<float> sumarVector, vectorsType returnNotation);
 };

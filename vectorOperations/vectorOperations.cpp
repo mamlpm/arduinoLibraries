@@ -16,6 +16,7 @@ vectorOperations::vectorOperations(float x, float y, vectorsType notacion)
 
 vectorOperations::vectorOperations(float x, float y, float z)
 {
+    throw invalid_argument("As to now, this library only supports 2D vectors");
     dimension_ = 3;
     cartesianVector_ = {x, y, z};
 }
@@ -39,7 +40,6 @@ float vectorOperations::convertAngleRad(float angle)
 
 float vectorOperations::convertAngleDegree(float angle)
 {
-    throw invalid_argument("As to now, this library only supports 2D vectors");
     return static_cast<float>(angle * 360 / (2 * M_PI));
 }
 
@@ -65,6 +65,12 @@ vector<float> vectorOperations::girarNGrados(float n, vectorsType returnNotation
     {
         throw invalid_argument("As to now, this library only supports 2D vectors");
     }
+    vector<vector<float>> rotationMatrix =
+        {
+            {static_cast<float>(cos(convertAngleRad(n))), static_cast<float>(-1 * sin(convertAngleRad(n)))},
+            {static_cast<float>(sin(convertAngleRad(n))), static_cast<float>(cos(convertAngleRad(n)))}};
+    
+    return multiplyVector(rotationMatrix);
 }
 
 vector<float> vectorOperations::multiplyVector(vector<vector<float>> rotationMatrix)

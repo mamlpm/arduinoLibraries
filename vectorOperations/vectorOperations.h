@@ -38,7 +38,6 @@ public:
     vectorOperations(float x, float y, float z);
     // TODO
     vector<float> girarNGrados(float n, vectorsType returnNotacion);
-    // TODO
     vector<float> sumarVector(vector<float> sumarVector, vectorsType returnNotacion);
 };
 #endif

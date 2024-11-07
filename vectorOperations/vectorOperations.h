@@ -3,6 +3,7 @@
 #define _USE_MATH_DEFINES
 #include <vector>
 #include <math.h>
+#include <stdexcept>
 using namespace std;
 class vectorOperations
 {
@@ -38,6 +39,6 @@ public:
     // TODO
     vector<float> girarNGrados(float n, vectorsType returnNotacion);
     // TODO
-    vector<float> sumarVector(float n, vectorsType returnNotacion);
+    vector<float> sumarVector(vector<float> sumarVector, vectorsType returnNotacion);
 };
 #endif

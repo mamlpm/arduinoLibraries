@@ -39,3 +39,19 @@ float vectorOperations::convertAngleDegree(float angle)
 {
     return static_cast<float>(angle * 360 / (2 * M_PI));
 }
+
+vector<float> vectorOperations::sumarVector(vector<float> sumarVector, vectorsType returnNotacion)
+{
+    if (sumarVector.size() != cartesianVector_.size())
+    {
+        throw invalid_argument("Vector dimensions must be the same");
+    }
+    else if (sumarVector.size() != 2)
+    {
+        throw invalid_argument("As to now, this library only supports 2D vectors");
+    }
+    vector<float> cartesianReturnVector;
+    for (int i = 0; i < sumarVector.size(); i++)
+        cartesianReturnVector.push_back(sumarVector[i] + cartesianVector_[i]);
+    return (returnNotacion == CARTESIANO) ? cartesianReturnVector : fromCartesianToPolar(cartesianReturnVector);
+}

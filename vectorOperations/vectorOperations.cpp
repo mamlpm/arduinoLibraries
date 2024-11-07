@@ -21,6 +21,13 @@ vectorOperations::vectorOperations(float x, float y, float z)
     cartesianVector_ = {x, y, z};
 }
 
+vectorOperations::vectorOperations(vector<float> input, vectorsType notacion)
+{
+    polarVector_ = (notacion == POLAR) ? input : fromCartesianToPolar(input);
+    cartesianVector_ = (notacion == POLAR) ? fromPolarToCartesian(input) : input;
+    dimension_ = cartesianVector_.size();
+}
+
 vector<float> vectorOperations::fromPolarToCartesian(vector<float> input)
 {
     return {static_cast<float>(input[0] * cos(convertAngleRad(input[1]))),
@@ -43,9 +50,14 @@ float vectorOperations::convertAngleDegree(float angle)
     return static_cast<float>(angle * 360 / (2 * M_PI));
 }
 
-vector<float> vectorOperations::sumarVector(vector<float> sumarVector, vectorsType returnNotation)
+vector<float> vectorOperations::returnVector(vectorsType formatToReturn)
 {
-    if (sumarVector.size() != cartesianVector_.size())
+    return formatToReturn == CARTESIANO ? cartesianVector_ : polarVector_;
+}
+
+vectorOperations vectorOperations::sumarVector(vectorOperations sumarVector)
+{
+    if (sumarVector.returnVector(CARTESIANO).size() != cartesianVector_.size())
     {
         throw invalid_argument("Vector dimensions must be the same");
     }
@@ -54,36 +66,34 @@ vector<float> vectorOperations::sumarVector(vector<float> sumarVector, vectorsTy
         throw invalid_argument("As to now, this library only supports 2D vectors");
     }
     vector<float> cartesianReturnVector;
-    for (int i = 0; i < sumarVector.size(); i++)
-        cartesianReturnVector.push_back(sumarVector[i] + cartesianVector_[i]);
-    return (returnNotation == CARTESIANO) ? cartesianReturnVector : fromCartesianToPolar(cartesianReturnVector);
+    for (int i = 0; i < sumarVector.returnVector(CARTESIANO).size(); i++)
+        cartesianReturnVector.push_back(sumarVector.returnVector(CARTESIANO)[i] + cartesianVector_[i]);
+    vectorOperations returnVector(cartesianReturnVector, CARTESIANO);
+    return returnVector;
 }
 
-vector<float> vectorOperations::girarNGrados(float n, vectorsType returnNotation)
+vectorOperations vectorOperations::girarNGrados(float n)
 {
     if (dimension_ != 2)
     {
         throw invalid_argument("As to now, this library only supports 2D vectors");
     }
-    vector<vector<float>> rotationMatrix =
-        {
-            {static_cast<float>(cos(convertAngleRad(n))), static_cast<float>(-1 * sin(convertAngleRad(n)))},
-            {static_cast<float>(sin(convertAngleRad(n))), static_cast<float>(cos(convertAngleRad(n)))}};
-    
-    return multiplyVector(rotationMatrix);
+    vectorOperations rotatedPolarVector({polarVector_[0], polarVector_[1] + n}, POLAR);
+    return rotatedPolarVector;
 }
 
-vector<float> vectorOperations::multiplyVector(vector<vector<float>> rotationMatrix)
+vectorOperations vectorOperations::multiplyVector(vector<vector<float>> multiplyMatrix)
 {
-    vector<float> returnVector;
-    for (vector<float> i : rotationMatrix)
+    vector<float> returnCartesianVector;
+    for (vector<float> i : multiplyMatrix)
     {
         float result = 0;
         for (int j = 0; j < i.size(); j++)
         {
             result += (i[j] * cartesianVector_[j]);
         }
-        returnVector.push_back(result);
+        returnCartesianVector.push_back(result);
     }
+    vectorOperations returnVector(returnCartesianVector, CARTESIANO);
     return returnVector;
 }

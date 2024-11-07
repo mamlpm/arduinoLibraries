@@ -24,8 +24,10 @@ public:
     };
     vectorOperations(float x, float y, vectorsType notacion);
     vectorOperations(float x, float y, float z);
-    vector<float> multiplyVector(vector<vector<float>> rotationMatrix);
-    vector<float> girarNGrados(float n, vectorsType returnNotation);
-    vector<float> sumarVector(vector<float> sumarVector, vectorsType returnNotation);
+    vectorOperations(vector<float> input, vectorsType notacion);
+    vectorOperations multiplyVector(vector<vector<float>> rotationMatrix);
+    vectorOperations girarNGrados(float n);
+    vectorOperations sumarVector(vectorOperations sumarVector);
+    vector<float> returnVector(vectorsType formatToReturn);
 };
 #endif

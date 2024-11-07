@@ -19,11 +19,6 @@ private:
     {
         typedef T type;
     };
-    enum vectorsType
-    {
-        CARTESIANO,
-        POLAR,
-    };
     vector<float> cartesianVector_;
     vector<float> polarVector_;
     const vector<vector<float>> rotationMatrix_;
@@ -34,6 +29,11 @@ private:
     vector<float> fromCartesianToPolar(vector<float> input);
 
 public:
+    enum vectorsType
+    {
+        CARTESIANO,
+        POLAR,
+    };
     vectorOperations(float x, float y, vectorsType notacion);
     vectorOperations(float x, float y, float z);
     // TODO

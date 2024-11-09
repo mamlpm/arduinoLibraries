@@ -34,6 +34,7 @@ bool testCreateVector()
 
 int main()
 {
+	setColor(red);
 	cout << "Hello world";
 	return 0;
 }
